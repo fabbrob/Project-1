@@ -1,22 +1,63 @@
 body {
   margin: 0 auto;
+
+  display: grid;
+  grid-template-rows: 90px 1fr;
 }
 
+/* HEADER CONTENT */
+
 header {
+  grid-row: 1/2;
+
   text-align: center;
   border-bottom: 2px solid gray;
 
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 80px 1fr 80px;
 }
 
 #helpButton {
-  background-color: gray;
   margin: 10px;
 
   grid-column: 1/2;
+
+  background-color: gray;
+  border: 2px solid black;
 }
 
 #heading {
-    grid-column: 2/3;
+  grid-column: 2/3;
+}
+
+/* MAIN CONTENT */
+
+#main {
+  grid-row: 2/2;
+
+  margin: 0 auto;
+  height: 90vh;
+
+  display: grid;
+  grid-template-rows: 1fr 220px;
+}
+
+#inputField {
+  width: 350px;
+  height: 420px;
+
+  margin: auto;
+
+  background-color: gray;
+  border: 2px solid black;
+}
+
+#keyboard {
+  width: 500px;
+  height: 200px;
+
+  margin-bottom: 20px;
+
+  background-color: gray;
+  border: 2px solid black;
 }
