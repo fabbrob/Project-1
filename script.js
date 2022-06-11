@@ -1,12 +1,24 @@
+//  VARIABLES   //
+
+
 //getters for the tiles and keys in their respective arrays
 const tiles = document.querySelectorAll('.tile');
 const keys = document.querySelectorAll('.letter');
 
 //getter for the backspace key
 const backspaceKey = document.querySelector('#backspace');
+const enterKey = document.querySelector('#enter');
 
 //a variable that represents what tile is the next to be typed into
 let currentTileIndex = 0;
+
+
+
+
+
+
+// FUNCTIONS BELOW //
+
 
 //function that allows for the input from clicking on the keyboard letters
 function keyPressed(event) {
@@ -19,8 +31,8 @@ function keyPressed(event) {
 }
 
 //function that allows for the backspace key to work accordingly
-function backspace(event) {
-    if(tiles[currentTileIndex].innerText === ''){
+function backspace() {
+    if(tiles[currentTileIndex].innerText === '' && currentTileIndex !== 0){
         tiles[currentTileIndex-1].innerText = '';
     }
 
@@ -28,6 +40,28 @@ function backspace(event) {
         currentTileIndex--;
     }
 }
+
+function enter() {
+    if(currentTileIndex%5 === 4) {
+
+    }
+}
+
+/* 
+
+when you press enter
+
+make the 5 letter word based on the other tiles in the row
+
+*/
+
+
+
+
+
+
+
+//IMMEDIATE CODE BELOW//
 
 //adds the key pressing functionality for each letter key
 for(const key of keys) {
