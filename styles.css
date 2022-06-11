@@ -1,0 +1,22 @@
+body {
+  margin: 0 auto;
+}
+
+header {
+  text-align: center;
+  border-bottom: 2px solid gray;
+
+  display: grid;
+  grid-template-columns: 80px 1fr;
+}
+
+#helpButton {
+  background-color: gray;
+  margin: 10px;
+
+  grid-column: 1/2;
+}
+
+#heading {
+    grid-column: 2/3;
+}
