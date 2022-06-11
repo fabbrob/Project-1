@@ -48,8 +48,8 @@ header {
 
   margin: auto;
 
-  background-color: gray;
-  border: 2px solid black;
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
 }
 
 #keyboard {
@@ -61,3 +61,20 @@ header {
   background-color: gray;
   border: 2px solid black;
 }
+
+/* INPUT FIELD CONTENT */
+
+.inputRow {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.tile {
+    width: 90%;
+    height: 90%;
+
+    margin: auto;
+
+    border: 1px solid gray;
+}
+/* KEYBOARD CONTENT */
