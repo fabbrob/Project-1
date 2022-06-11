@@ -80,6 +80,10 @@ header {
     margin: auto;
 
     border: 1px solid gray;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 /* KEYBOARD CONTENT */
 
@@ -117,3 +121,9 @@ header {
     justify-content: center;
     align-items: center;
 }
+
+.key:hover {
+    background-color: lightblue;
+}
+
+/* USED IN JS */
