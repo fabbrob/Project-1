@@ -116,6 +116,7 @@ header {
     margin: auto;
 
     background-color: gray;
+    border: none;
 
     display: flex;
     justify-content: center;
