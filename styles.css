@@ -123,6 +123,10 @@ header {
     align-items: center;
 }
 
+.key:hover {
+  background-color: pink;
+}
+
 .key:disabled {
   background-color: gray;
 }
