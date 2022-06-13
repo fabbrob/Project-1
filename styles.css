@@ -115,16 +115,28 @@ header {
     height: 90%;
     margin: auto;
 
-    background-color: gray;
-    border: none;
+    background-color: beige;
+    border: 1px solid black;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.key:hover {
-    background-color: lightblue;
+.key:disabled {
+  background-color: gray;
 }
 
 /* USED IN JS */
+
+.gray {
+  background-color: gray;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
