@@ -42,7 +42,7 @@ let currentTile = currentInputRow.children[currentTileIndex];
 //function that picks a random word from the word array
 function setWordle() {
   const randomWordIndex = Math.floor(Math.random() * words.length);
-  wordle = 'thorn';
+  wordle = words[randomWordIndex];
 }
 
 //function that returns an array of the tile indexes that should be gray
@@ -97,9 +97,38 @@ function keyPressed(event) {
     //update the current tile index
     currentTileIndex++;
 
+    //make sure that the currentTile doesn't get reassigned to a undefined index
     if (currentTileIndex < currentInputRow.children.length) {
       currentTile = currentInputRow.children[currentTileIndex];
     }
+  }
+}
+
+//function that allows for the input from the user typing from their keyboard
+function keyTyped(event) {
+
+  if (currentTileIndex < currentInputRow.children.length && event.code.charAt(event.code.length - 1).match(`[A-Z]`)) {//if the current tile index smaller bigger than the indexes of the tiles
+    //get the letter typed
+    let input = event.code.charAt(event.code.length - 1);
+
+    //make the current tile contain the letter
+    currentTile.innerText = input;
+
+    //update the current tile index
+    currentTileIndex++;
+
+    //make sure that the currentTile doesn't get reassigned to a undefined index
+    if (currentTileIndex < currentInputRow.children.length) {
+      currentTile = currentInputRow.children[currentTileIndex];
+    }
+  }
+
+  if(event.code === 'Enter'){
+    enter();
+  }
+
+  if(event.code === 'Backspace'){
+    backspace();
   }
 }
 
@@ -147,10 +176,7 @@ function enter() {
     const yellowTiles = findYellows();
     const greenTiles = findGreens();
 
-    console.log(findYellows());
-    console.log(findGreens());
-
-    //removes any green indexes from the yellow indexes array //YOU ARE UP TO HERE//
+    //removes any green indexes from the yellow indexes array
     for (let i = 0; i < yellowTiles.length; i++) { //for each the indexes in the yellow tiles
       for (let j = 0; j < greenTiles.length; j++) {  //loop through the greenTiles indexes
         //if the charAt in the userAttempt is the same for both color indexes
@@ -188,7 +214,7 @@ function enter() {
     if (greenTiles.length === 5) { // THIS IS THE WIN CONDITION CODE
     }
 
-    
+
 
     //turn the appriopriate tiles yellow
     for (let i = 0; i < yellowTiles.length; i++) {
@@ -214,6 +240,9 @@ function enter() {
 for (const key of keys) {
   key.addEventListener("click", keyPressed);
 }
+
+//adds the key typing functionality for the document
+document.body.addEventListener("keyup", keyTyped);
 
 //adds the backspacing functionality for the backspace key
 backspaceKey.addEventListener("click", backspace);
