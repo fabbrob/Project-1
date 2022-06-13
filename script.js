@@ -147,20 +147,18 @@ function enter() {
     const yellowTiles = findYellows();
     const greenTiles = findGreens();
 
+    console.log(findYellows());
+    console.log(findGreens());
+
     //removes any green indexes from the yellow indexes array //YOU ARE UP TO HERE//
-    for(let i = 0; i < yellowTiles; i++){
-      //for each the indexes in the yellow tiles
-      //loop through the greenTiles indexes
-      //if the charAt in the userAttempt is the same for both color indexes
-      //remove that index from the yellow tiles
-    }
-
-    //turn the appriopriate tiles green
-    for (let i = 0; i < greenTiles.length; i++) {
-      currentInputRow.children[greenTiles[i]].classList.add('green');
-    }
-
-    if(greenTiles.length === 5) { // THIS IS THE WIN CONDITION CODE
+    for (let i = 0; i < yellowTiles.length; i++) { //for each the indexes in the yellow tiles
+      for (let j = 0; j < greenTiles.length; j++) {  //loop through the greenTiles indexes
+        //if the charAt in the userAttempt is the same for both color indexes
+        if (userAttempt.charAt(yellowTiles[i]) === userAttempt.charAt(greenTiles[j])) {
+          grayTiles.push(yellowTiles[i]);
+          yellowTiles.splice(i, 1);
+        }
+      }
     }
 
     //turn the appriopriate tiles gray
@@ -174,6 +172,23 @@ function enter() {
         }
       }
     }
+
+    //turn the appriopriate tiles green
+    for (let i = 0; i < greenTiles.length; i++) {
+      currentInputRow.children[greenTiles[i]].classList.add('green');
+
+      //incase a double letter has turned gray, dont disable that key on the keyboard
+      for (let j = 0; j < keys.length; j++) {
+        if (keys[j].innerText === currentInputRow.children[greenTiles[i]].innerText) {
+          keys[j].disabled = false;
+        }
+      }
+    }
+
+    if (greenTiles.length === 5) { // THIS IS THE WIN CONDITION CODE
+    }
+
+    
 
     //turn the appriopriate tiles yellow
     for (let i = 0; i < yellowTiles.length; i++) {
