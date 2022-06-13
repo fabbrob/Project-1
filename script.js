@@ -149,6 +149,10 @@ function enter() {
 
     //removes any green indexes from the yellow indexes array //YOU ARE UP TO HERE//
     for(let i = 0; i < yellowTiles; i++){
+      //for each the indexes in the yellow tiles
+      //loop through the greenTiles indexes
+      //if the charAt in the userAttempt is the same for both color indexes
+      //remove that index from the yellow tiles
     }
 
     //turn the appriopriate tiles green
