@@ -17,6 +17,9 @@ let userAttempt = '';
 //variable to hold the wordle
 let wordle = '';
 
+//variable used to disable keys from typing
+let disabledKeys = '';
+
 //getters for the tiles and keys in their respective arrays
 const attempts = document.querySelectorAll(".inputRow");
 const keys = document.querySelectorAll(".letter");
@@ -37,6 +40,8 @@ let currentInputRow = attempts[currentInputRowIndex];
 //getter for the current tile the user is on
 let currentTile = currentInputRow.children[currentTileIndex];
 
+
+
 // FUNCTIONS BELOW //
 
 //function that picks a random word from the word array
@@ -51,7 +56,10 @@ function findGrays() {
 
   for (let i = 0; i < wordle.length; i++) {
     if (!wordle.includes(userAttempt.charAt(i))) { //if the letter is not included in the wordle
+      //add the index to the grays array
       grayIndexes.push(i);
+      //add that letter to the disabled keys
+      disabledKeys += userAttempt.charAt(i).toUpperCase();
     }
   }
 
@@ -63,7 +71,7 @@ function findYellows() {
   let yellowIndexes = [];
 
   for (let i = 0; i < wordle.length; i++) {
-    if (wordle.includes(userAttempt.charAt(i)) && wordle.charAt(i) !== userAttempt.charAt(i)) { //if the letter is included in the wordle and is not in the same spot
+    if (wordle.includes(userAttempt.charAt(i)) && wordle.charAt(i) !== userAttempt.charAt(i)) { //if the letter is included in the word and is not in the same spot
       yellowIndexes.push(i);
     }
   }
@@ -106,8 +114,10 @@ function keyPressed(event) {
 
 //function that allows for the input from the user typing from their keyboard
 function keyTyped(event) {
-
-  if (currentTileIndex < currentInputRow.children.length && event.code.charAt(event.code.length - 1).match(`[A-Z]`)) {//if the current tile index smaller bigger than the indexes of the tiles
+  //if the currentTileIndex is still within the available tiles
+  //and the key pressed is a letter (event.code returns KeyA so you must grab the char at the end of that string)
+  //and the key pressed is not a disabled letter
+  if (currentTileIndex < currentInputRow.children.length && event.code.charAt(event.code.length - 1).match('[A-Z]') && event.code.charAt(event.code.length - 1).match('[^' + disabledKeys + ']')) {//if the current tile index smaller bigger than the indexes of the tiles
     //get the letter typed
     let input = event.code.charAt(event.code.length - 1);
 
@@ -117,36 +127,40 @@ function keyTyped(event) {
     //update the current tile index
     currentTileIndex++;
 
-    //make sure that the currentTile doesn't get reassigned to a undefined index
+    //make sure that the currentTileIndex doesn't get reassigned to a undefined index
     if (currentTileIndex < currentInputRow.children.length) {
+      //update the currentTile
       currentTile = currentInputRow.children[currentTileIndex];
     }
   }
 
-  if(event.code === 'Enter'){
+  if (event.code === 'Enter') {
     enter();
   }
 
-  if(event.code === 'Backspace'){
+  if (event.code === 'Backspace') {
     backspace();
   }
 }
 
 //function that allows for the backspace key to work accordingly
 function backspace() {
-  if (
-    (currentTile.innerText === "" && currentTileIndex !== 0) ||
+  if ( //check that the currentTileIndex points to the tile that the user is about to type into
+    (currentTileIndex !== 0) ||
     currentTileIndex === currentInputRow.children.length
   ) {
+    //move the index back to the index of the last typed tile
     currentTileIndex--;
+    //update the currentTile to then point to the last typed tile
     currentTile = currentInputRow.children[currentTileIndex];
+    //update the innerText of tile to blank (i.e. delete the letter typed)
     currentTile.innerText = "";
   }
 }
 
 //function that allows for enter functionality
 function enter() {
-  //if the enter key pressed with the player filling out a word
+  //if the enter key pressed with the player filling out a word (i.e. currentTileIndex points beyond the availale tiles)
   if (currentTileIndex === currentInputRow.children.length) {
 
     //reset the user attempt
@@ -160,76 +174,79 @@ function enter() {
     //make the user attempt lowercase
     userAttempt = userAttempt.toLowerCase();
 
+    //if the user's attempt is not a valid answer
     if (!words.includes(userAttempt)) {
+      //create an alert telling the user that the guess is not valid
       alert('That is not a valid guess');
+      //loop through the tiles of the inputRow and reset their innerText's to blank
       for (let i = 0; i < currentInputRow.children.length; i++) {
         currentInputRow.children[i].innerText = '';
       }
 
+      //reset the currentTileIndex and currentTile so that the user starts back on the first letter again
       currentTileIndex = 0;
       currentTile = currentInputRow.children[currentTileIndex];
-      return;
-    }
 
-    //get the arrays of what colors tiles need to be
-    const grayTiles = findGrays();
-    const yellowTiles = findYellows();
-    const greenTiles = findGreens();
+    } else { //if the user's attempt is a valid answer
 
-    //removes any green indexes from the yellow indexes array
-    for (let i = 0; i < yellowTiles.length; i++) { //for each the indexes in the yellow tiles
-      for (let j = 0; j < greenTiles.length; j++) {  //loop through the greenTiles indexes
-        //if the charAt in the userAttempt is the same for both color indexes
-        if (userAttempt.charAt(yellowTiles[i]) === userAttempt.charAt(greenTiles[j])) {
-          grayTiles.push(yellowTiles[i]);
-          yellowTiles.splice(i, 1);
+      //get the arrays of what colors tiles need to be
+      const grayTiles = findGrays();
+      const yellowTiles = findYellows();
+      const greenTiles = findGreens();
+
+      //removes any green indexes from the yellow indexes array
+      for (let i = 0; i < yellowTiles.length; i++) { //for each the indexes in the yellow tiles
+        for (let j = 0; j < greenTiles.length; j++) {  //loop through the greenTiles indexes
+          //if the charAt in the userAttempt is the same for both color indexes
+          if (userAttempt.charAt(yellowTiles[i]) === userAttempt.charAt(greenTiles[j])) {
+            //convert that character from a yellow tile to a gray tile by adding its index to the grays
+            grayTiles.push(yellowTiles[i]);
+            //and then removing it from the yellows
+            yellowTiles.splice(i, 1);
+          }
         }
       }
-    }
 
-    //turn the appriopriate tiles gray
-    for (let i = 0; i < grayTiles.length; i++) {
-      currentInputRow.children[grayTiles[i]].classList.add('gray');
+      //turn the appriopriate tiles gray by adding the gray class to it
+      for (let i = 0; i < grayTiles.length; i++) {
+        currentInputRow.children[grayTiles[i]].classList.add('gray');
 
-      //turn the key associated with the gray letter to disabled
-      for (let j = 0; j < keys.length; j++) {
-        if (keys[j].innerText === currentInputRow.children[grayTiles[i]].innerText) {
-          keys[j].disabled = true;
+        //turn the keys associated with the gray letter to disabled
+        for (let j = 0; j < keys.length; j++) {
+          if (keys[j].innerText === currentInputRow.children[grayTiles[i]].innerText) {
+            keys[j].disabled = true;
+          }
         }
       }
-    }
 
-    //turn the appriopriate tiles green
-    for (let i = 0; i < greenTiles.length; i++) {
-      currentInputRow.children[greenTiles[i]].classList.add('green');
+      //turn the appriopriate tiles green
+      for (let i = 0; i < greenTiles.length; i++) {
+        currentInputRow.children[greenTiles[i]].classList.add('green');
 
-      //incase a double letter has turned gray, dont disable that key on the keyboard
-      for (let j = 0; j < keys.length; j++) {
-        if (keys[j].innerText === currentInputRow.children[greenTiles[i]].innerText) {
-          keys[j].disabled = false;
+        //incase a double letter has turned gray, undisable that key both on the clickable and typeable keyboard
+        for (let j = 0; j < keys.length; j++) {
+          if (keys[j].innerText === currentInputRow.children[greenTiles[i]].innerText) {
+            keys[j].disabled = false;
+            disabledKeys = disabledKeys.replace(currentInputRow.children[greenTiles[i]].innerText, '');
+          }
         }
       }
-    }
 
-    if (greenTiles.length === 5) { // THIS IS THE WIN CONDITION CODE
-    }
+      //turn the appriopriate tiles yellow
+      for (let i = 0; i < yellowTiles.length; i++) {
+        currentInputRow.children[yellowTiles[i]].classList.add('yellow');
+      }
 
+      //move down to the next available attempt (resetting appriopriate variables)
+      if (currentInputRowIndex < attempts.length - 1) {
+        currentInputRowIndex++;
+        currentInputRow = attempts[currentInputRowIndex];
 
-
-    //turn the appriopriate tiles yellow
-    for (let i = 0; i < yellowTiles.length; i++) {
-      currentInputRow.children[yellowTiles[i]].classList.add('yellow');
-    }
-
-    //move down to the next available attempt (resetting appriopriate variables)
-    if (currentInputRowIndex < attempts.length - 1) {
-      currentInputRowIndex++;
-      currentInputRow = attempts[currentInputRowIndex];
-
-      currentTileIndex = 0;
-      currentTile = currentInputRow.children[currentTileIndex];
-    } else { //if you cant, end the game
-      enterKey.disabled = true;
+        currentTileIndex = 0;
+        currentTile = currentInputRow.children[currentTileIndex];
+      } else { //if you cant, end the game
+        enterKey.disabled = true;
+      }
     }
   }
 }
@@ -252,3 +269,5 @@ enterKey.addEventListener("click", enter);
 
 setWordle();
 console.log(wordle);
+
+
