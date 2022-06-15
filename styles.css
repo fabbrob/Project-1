@@ -14,24 +14,7 @@ header {
   border-bottom: 2px solid gray;
 
   display: grid;
-  grid-template-columns: 80px 1fr 80px;
-}
-
-#help {
-  margin: 10px;
-
-  grid-column: 1/2;
-
-  background-color: gray;
-  border: 2px solid black;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#heading {
-  grid-column: 2/3;
+  grid-template-columns: 1fr;
 }
 
 /* MAIN CONTENT */
