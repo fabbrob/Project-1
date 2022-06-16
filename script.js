@@ -54,12 +54,17 @@ function setWordle() {
 function findGrays() {
   let grayIndexes = [];
 
+  let copy = wordle; //create a copy of the wordle so that you can edit it when dealing with double/triple letters
+
   for (let i = 0; i < wordle.length; i++) {
-    if (!wordle.includes(userAttempt.charAt(i))) { //if the letter is not included in the wordle
+    if (!copy.includes(userAttempt.charAt(i))) { //if the letter is not included in the wordle
       //add the index to the grays array
       grayIndexes.push(i);
       //add that letter to the disabled keys
       disabledKeys += userAttempt.charAt(i).toUpperCase();
+    } else {
+      //update the copy to remove the letter that was grayed
+      copy = copy.replace(copy.charAt(copy.indexOf(userAttempt.charAt(i))), ' ');
     }
   }
 
@@ -70,9 +75,12 @@ function findGrays() {
 function findYellows() {
   let yellowIndexes = [];
 
-  for (let i = 0; i < wordle.length; i++) {
-    if (wordle.includes(userAttempt.charAt(i)) && wordle.charAt(i) !== userAttempt.charAt(i)) { //if the letter is included in the word and is not in the same spot
-      yellowIndexes.push(i);
+  let copy = wordle; //create a copy of the wordle so that you can edit it when dealing with double/triple letters
+
+  for (let i = 0; i < copy.length; i++) {
+    if (copy.includes(userAttempt.charAt(i)) && wordle.charAt(i) !== userAttempt.charAt(i)) { //if the letter is included in the word and is not in the same spot
+      yellowIndexes.push(i); //add that index to the yellow indexes array
+      copy = copy.replace(copy.charAt(copy.indexOf(userAttempt.charAt(i))), ' '); //edit the wordle to remove that letter
     }
   }
 
@@ -85,7 +93,7 @@ function findGreens() {
 
   for (let i = 0; i < wordle.length; i++) {
     if (wordle.charAt(i) === userAttempt.charAt(i)) { //if the letter is in the right spot
-      greenIndexes.push(i);
+      greenIndexes.push(i); //add the index to the green index array
     }
   }
 
