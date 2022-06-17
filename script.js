@@ -26,13 +26,13 @@ let disabledKeys = '';
 //getter for the keyboard div
 const keyboard = document.querySelector('#keyboard');
 
-//getters for the tiles and keys in their respective arrays
-const attempts = document.querySelectorAll(".inputRow");
-const keys = document.querySelectorAll(".letter");
-
 //getters for the backspace and enter key
 const backspaceKey = document.querySelector("#backspace");
 const enterKey = document.querySelector("#enter");
+
+//getters for the tiles and keys in their respective arrays
+const attempts = document.querySelectorAll(".inputRow");
+const keys = document.querySelectorAll(".letter");
 
 //a variable that represents the index of what row is the being typed into
 let currentInputRowIndex = 0;
@@ -334,6 +334,7 @@ function removeKeyboard() {
     keyboard.firstChild.remove();
   }
   keyboard.remove();
+  disabledKeys = '[A-Z]';
 }
 
 //function that adds the keyboard back to the DOM
