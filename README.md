@@ -71,4 +71,7 @@ Originally I had coded the keys on the keyboard as Div elements. Where I tried a
 
 1. Plan more so that it will be easier to break tasks down into smaller problems
 2. Solve the problems with pseudo code before adding them in the code
-3. Code for the future, by using more variables/functions (especially functions) to save lines of code across the .js file
+3. Code for the future
+	- by using more variables/functions (especially functions) to save lines of code across the .js file
+	- use less global variables (I am very sorry Ge)
+	- add comments as you go
