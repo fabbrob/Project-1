@@ -74,4 +74,4 @@ Originally I had coded the keys on the keyboard as Div elements. Where I tried a
 3. Code for the future
 	- by using more variables/functions (especially functions) to save lines of code across the .js file
 	- use less global variables (I am very sorry Ge)
-	- add comments as you go
+	- add comments / clean code as you go
